@@ -1,0 +1,163 @@
+#include <iostream>
+
+using namespace std;
+
+class Person {
+
+    friend class Book;
+
+public:
+
+    int getId();
+    string getName();
+    void setId( int id);
+    void setName (string name);
+
+private:
+
+    int PersonId;
+    string PersonName;
+
+};
+
+void Person::setId(int id) {
+
+    PersonId=id;
+
+}
+
+void Person::setName(string name) {
+
+    PersonName=name;
+
+}
+
+int Person::getId() {
+    return PersonId;
+}
+
+string Person::getName() {
+    return PersonName;
+}
+
+class Book {
+
+    friend class Person;
+    friend bool BookReservation(Book x, Book y);
+    friend void BookInfo(Book x);
+
+
+public:
+    Book(int Id, string n);
+    Book(int Id, string n, int borrowerld, string borrowerName);
+
+
+
+
+    void BookReservation(Book y);
+
+
+
+private:
+
+    int BookID;
+    string BookName;
+    Person barrower;
+    bool reservation;
+
+};
+
+
+
+Book::Book(int Id, string n)
+{
+    reservation = false;
+    BookID = Id;
+    BookName = n;
+
+}
+
+Book::Book(int Id, string n, int borrowerId, string borrowerName)
+{
+    BookID = Id;
+    BookName = n;
+    barrower.setName(borrowerName);
+    barrower.setId(borrowerId);
+
+
+}
+
+void Book::BookReservation(Book y) {
+
+barrower.setId(y.barrower.getId());
+barrower.setName(y.barrower.getName());
+reservation = true;
+
+}
+
+
+void BookInfo(Book x) {
+    cout << "Kitap adi: " << x.BookName << endl <<"Kitap Id: "<< x.BookID << endl ;
+    cout << "Alici adi: " << x.barrower.getName() << endl <<"Alici Id: "<< x.barrower.getId() << endl ;
+};
+
+bool BookReservation(Book x, Book y){
+
+    if (x.BookID==y.BookID){
+
+        if(x.reservation){
+            cout <<"Book has already booked by "<< x.barrower.getName() <<"Id: "<< x.barrower.getId()<< endl;
+
+            return false;
+
+        }else {
+            cout<<"Reservation completed"<<endl;
+
+
+            return true;
+        }
+
+    } else {
+        cout<< "Book could not found"<<endl;
+        return false;
+    }
+};
+
+int main()
+{
+    Book b1(1,"Alice");
+    for(int i=0;i<2;i++){
+
+        cout<<"Kitap id ve kitap adi giriniz. "<<endl;
+
+        int BID;
+        string Bname;
+
+        cin >> BID >> Bname;
+
+        cout<< "Kullanici id ve adi giriniz."<<endl;
+
+        int PID;
+        string Pname;
+
+        cin>>PID>>Pname;
+
+        Book b2(BID,Bname,PID,Pname);
+
+
+
+        if(BookReservation(b1, b2)){
+
+
+
+            b1.BookReservation(b2);
+
+            BookInfo(b1);
+
+        }
+
+
+
+    }
+    return 0;
+}
