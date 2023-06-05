@@ -1,0 +1,120 @@
+#include <iostream>
+
+using namespace std ;
+
+class Rectangle {
+
+    //Friend Functions:
+    friend void swap(Rectangle &r1,Rectangle &r2);
+    friend void setArea(Rectangle &r);
+    friend void compareArea(Rectangle r1, Rectangle r2);
+
+private:
+
+    int ShortSide;
+    int LongSide;
+    int Area;
+    string character;
+
+public:
+
+    void print();
+
+    //Constructors:
+    Rectangle();
+
+    Rectangle(int LS );
+    Rectangle(int LS, int SS);
+    ~Rectangle();
+
+
+};
+Rectangle::Rectangle() {
+
+}
+Rectangle::Rectangle(int LS) {
+
+    LongSide = LS;
+    ShortSide = 2;
+    character ="BEGUM";
+}
+
+Rectangle::Rectangle(int LS, int SS) {
+    LongSide = LS;
+    ShortSide = SS;
+    character ="EGE";
+}
+Rectangle::~Rectangle() {
+
+}
+
+void Rectangle::print() {
+
+    for (int i = 0; i < LongSide; ++i) {
+
+        for (int j = 0; j< ShortSide; ++j) {
+
+            cout << character ;
+
+        }
+
+        cout<< endl;
+
+    }
+
+}
+
+void swap(Rectangle &r1,Rectangle &r2){
+
+    Rectangle r3 = r1;
+    r1 = r2;
+    r2 = r3;
+
+};
+
+void setArea(Rectangle &r){
+
+    r.Area= r.ShortSide*r.LongSide;
+
+};
+
+void compareArea(Rectangle r1, Rectangle r2){
+
+    if(r1.Area> r2.Area){
+        cout<< "R1 alani R2'den buyuk"<<endl;
+    }else {
+        cout << "R1 alani R2'den kucuk"<< endl;
+    }
+
+};
+
+int main() {
+
+    cout << " uzun ve kisa kenar giriniz"<<endl;
+    int Ls1,Ss1;
+    cin >> Ls1;
+    cin >> Ss1;
+
+    Rectangle R1(Ls1,Ss1);
+    Rectangle R2(5);
+
+    R1.print();
+    R2.print();
+
+    setArea(R1);
+    setArea(R2);
+
+    compareArea(R1,R2);
+
+    swap(R1,R2);
+
+    R1.print();
+    R2.print();
+
+    setArea(R1);
+    setArea(R2);
+
+    compareArea(R1,R2);
+
+    return 0;
+}
