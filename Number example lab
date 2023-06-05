@@ -1,0 +1,195 @@
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+class Fraction {
+
+    friend class Decimal;
+
+private:
+
+    int numerator;
+    int denominator;
+
+public:
+
+    Fraction();
+    explicit Fraction(int n);
+    Fraction(int n, int d);
+    ~Fraction();
+
+    void show() const;
+    Fraction Add(Fraction x);
+
+};
+
+class Decimal{
+
+private:
+
+    int whole_part;
+    int fractional_part;
+    int fractional_digit;
+    Fraction fractionEquivalent;
+
+    int FD() const;
+    Fraction DecimalToFraction() const;
+
+public:
+
+    Decimal();
+    Decimal(int w);
+    Decimal(int w , int f);
+    ~Decimal();
+
+    void show();
+    Fraction Add(Decimal x, Fraction y);
+
+};
+
+Fraction::Fraction() {
+
+}
+
+Fraction::Fraction(int n) {
+
+    numerator = n;
+    denominator = 1;
+
+}
+
+Fraction::Fraction(int n, int d) {
+
+    numerator = n;
+    denominator = d;
+
+}
+
+Fraction::~Fraction() {
+
+}
+
+void Fraction::show() const {
+
+    cout<< numerator << "/" << denominator << endl;
+
+}
+
+Fraction Fraction::Add(Fraction x) {
+
+    Fraction y;
+
+    y.numerator = numerator*x.denominator + x.numerator*denominator;
+    y.denominator = denominator*x.denominator;
+
+    return y;
+
+}
+
+Decimal::Decimal() {
+
+}
+
+Decimal::Decimal(int w) {
+
+    whole_part = w;
+    fractional_part = 0;
+    fractional_digit = 0;
+    fractionEquivalent = DecimalToFraction();
+
+}
+
+Decimal::Decimal(int w, int f) {
+
+    whole_part = w;
+    fractional_part = f;
+    fractional_digit = FD();
+    fractionEquivalent= DecimalToFraction();
+
+}
+
+Decimal::~Decimal() {
+
+}
+
+int Decimal::FD() const {
+
+    int x = fractional_part;
+    int y = pow(x,1/10);
+
+    return y;
+
+}
+
+Fraction Decimal::DecimalToFraction() const {
+
+    int n = whole_part*pow(10,fractional_digit) + fractional_part ;
+    int d = pow(10,fractional_digit);
+
+    Fraction x(n,d);
+
+    return x;
+
+}
+
+void Decimal::show() {
+
+
+
+    if (!(whole_part==0 && fractional_part ==0) ) {
+
+        cout << whole_part << "." << fractional_part << endl;
+    };
+
+   fractionEquivalent.show();
+
+}
+
+Fraction Decimal::Add(Decimal x, Fraction y) {
+
+    fractionEquivalent.numerator = x.fractionEquivalent.numerator * y.denominator  +  y.numerator * x.fractionEquivalent.denominator;
+    fractionEquivalent.denominator = x.fractionEquivalent.denominator * y.denominator;
+}
+
+int main() {
+
+    int x;
+    cin>> x;
+    Decimal D1(x);
+    D1.show();
+
+    int w, f;
+    cin>> w;
+    cin>> f;
+    Decimal D2(w,f);
+    D2.show();
+
+    int n, d;
+    cin>> n >> d;
+    Fraction F1(n,d);
+    F1.show();
+
+    int y;
+    cin>> y;
+    Fraction F2(y);
+    F2.show();
+
+    Fraction F3 = F1.Add(F2);
+    F3.show();
+
+    Decimal D3;
+
+    D3.Add(D1,F1);
+
+    cout << "1. toplam: "<< endl;
+    D3.show();
+
+    Decimal D4;
+    D4.Add(D2,F1);
+    cout << "2. toplam: "<< endl;
+    D4.show();
+
+    return 0;
+
+};
