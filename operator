@@ -1,0 +1,140 @@
+#include <iostream>
+
+using namespace std;
+
+class Binary {
+
+friend Binary operator+(Binary b1, Binary b2);
+friend Binary operator-(Binary b1, Binary b2);
+friend ostream& operator<<(ostream& s, const Binary& b1);
+
+public:
+
+    Binary();
+    Binary(int D);
+    Binary operator*(Binary b1);
+    Binary operator!();
+
+private:
+
+    int value[5];
+
+
+};
+
+Binary::Binary() {
+
+}
+
+Binary::Binary(int D) {
+
+    for(int i = 0 ;i<5 ;i++)
+
+    {
+        value[i]=D%2;
+        D= D/2;
+
+    }
+
+
+
+}
+
+Binary Binary::operator!() {
+
+    Binary x;
+
+    for (int i = 0; i < 5; i++) {
+        if (value[i] == 0) {
+            x.value[i] = 1;
+        } else {
+            x.value[i] = 0;
+        }
+    }
+
+    return x;
+
+}
+
+Binary Binary::operator*(Binary b1) {
+
+    Binary x;
+
+    for (int i = 0; i < 5; i++) {
+        if (value[i] == b1.value[i]) {
+            x.value[i] = 0;
+        } else {
+            x.value[i] = 1;
+        }
+    }
+
+    return x ;
+}
+
+Binary operator+(Binary b1, Binary b2) {
+
+    Binary x;
+
+
+    for (int i = 0; i < 5; i++) {
+        if (b1.value[i] == 0 && b2.value[i] == 0) {
+            x.value[i] = 0;
+        } else {
+            x.value[i] = 1;
+        }
+    }
+
+    return  x;
+
+};
+
+Binary operator-(Binary b1, Binary b2){
+
+    Binary x;
+
+    for (int i = 0; i < 5; i++) {
+      if (b1.value[i] == 1 && b2.value[i] == 1) {
+          x.value[i] = 1;
+      } else {
+          x.value[i] = 0;
+      }
+    }
+
+    return  x;
+
+};
+
+ostream& operator<<(ostream& s, const Binary& b1){
+
+
+    for ( int i = 0 ; i<5 ;i++){
+        s<< b1.value[i];
+    }
+
+
+    return  s;
+
+}
+int main()
+{
+    Binary b1=13;
+    Binary b2=12;
+
+    Binary b3= operator+(b1,b2);
+    Binary b4= operator-(b1,b2);
+    Binary b5= b1.operator*(b2);
+    Binary b6= b1.operator!();
+    Binary b7= operator+(b1,b2).operator!();
+    Binary b8= operator+(b1,b2.operator!());
+
+    cout<<"b1 or b2 "<<b3<<endl;
+    cout<<"b1 and b2 "<<b4<<endl;
+    cout<<"b1 xor b2 "<<b5<<endl;
+    cout<<"b1 not " <<b6<<endl;
+    cout<<"b1 veya b2 isleminin tersi: "<<b7<<endl;
+    cout<<"b1 veya b2'nin aksi: "<<b8<<endl;
+
+
+
+    return 0;
+}
